@@ -1,18 +1,19 @@
 package xtractr
 
 import (
-	"archive/zip"
 	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
+
+	zipYeka "github.com/yeka/zip"
 )
 
 /* How to extract a ZIP file. */
 
 // ExtractZIP extracts a zip file.. to a destination. Simple enough.
 func ExtractZIP(xFile *XFile) (int64, []string, error) {
-	zipReader, err := zip.OpenReader(xFile.FilePath)
+	zipReader, err := zipYeka.OpenReader(xFile.FilePath)
 	if err != nil {
 		return 0, nil, fmt.Errorf("zip.OpenReader: %w", err)
 	}
@@ -34,7 +35,7 @@ func ExtractZIP(xFile *XFile) (int64, []string, error) {
 	return size, files, nil
 }
 
-func (x *XFile) unzip(zipFile *zip.File) (int64, error) { //nolint:dupl
+func (x *XFile) unzip(zipFile *zipYeka.File) (int64, error) {
 	wfile := x.clean(zipFile.Name)
 	if !strings.HasPrefix(wfile, x.OutputDir) {
 		// The file being written is trying to write outside of our base path. Malicious archive?

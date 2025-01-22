@@ -423,7 +423,7 @@ func (x *XFile) clean(filePath string, trim ...string) string {
 		}
 	}
 
-	return filepath.Clean(filepath.Join(x.OutputDir, filePath))
+	return "./" + filepath.Clean(filepath.Join(x.OutputDir, filePath))
 }
 
 // AllExcept can be used as an input to ExcludeSuffix in a Filter.
